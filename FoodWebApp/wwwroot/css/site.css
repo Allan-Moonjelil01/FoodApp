@@ -38,13 +38,41 @@ body {
     height: 400px;
    
 }
-/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-a.navbar-brand {
-    white-space: normal;
-    text-align: center;
-    word-break: break-all;
+/* Side Menu */
+#Menu-list {
+    top: 5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow-y: auto;
+    max-height: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+    #Menu-list .menu-item a {
+        color: black; /* Set default link color to black */
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 1rem;
+    }
+
+    #Menu-list .menu-item:hover {
+        background-color: #198754; /* Bootstrap green */
+        border-radius: 8px;
+    }
+
+        #Menu-list .menu-item:hover a {
+            color: white !important; /* Text turns white on hover */
+            font-weight: bold;
+        }
+
+
+    /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+    a.navbar-brand {
+        white-space: normal;
+        text-align: center;
+        word-break: break-all;
+    }
 
 
 
