@@ -1,4 +1,4 @@
-using DataAccess;
+﻿using DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodWebApp
@@ -11,6 +11,9 @@ namespace FoodWebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 
             // Register DBContext.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -33,9 +36,15 @@ namespace FoodWebApp
 
             app.UseAuthorization();
 
+            // area‐aware first:
             app.MapControllerRoute(
-                name: "default",
-                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+              name: "areas",
+              pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+            // fallback for non-area controllers:
+            app.MapControllerRoute(
+              name: "default",
+              pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

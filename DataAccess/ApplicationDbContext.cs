@@ -3,17 +3,102 @@ using System;
 
 namespace DataAccess
 {
+    public interface IGenericRepository<T> where T : class
+    {
+        Task<T> GetByIdAsync(int id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task AddAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(int id);
+        IQueryable<T> Query();
+    }
+    public interface IUnitOfWork
+    {
+        IGenericRepository<T> Repository<T>() where T : class;
+        IGenericRepository<MenuItem> MenuItem { get; }
+        IGenericRepository<Cart> Carts { get; }
+        Task<int> CompleteAsync();
+    }
+    public class UnitOfWork : IUnitOfWork
+    {
+        private readonly ApplicationDbContext _context;
+
+        public UnitOfWork(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public IGenericRepository<T> Repository<T>() where T : class
+        {
+            return new GenericRepository<T>(_context);
+        }
+
+        public IGenericRepository<MenuItem> MenuItem => new GenericRepository<MenuItem>(_context);
+        public IGenericRepository<Cart> Carts => new GenericRepository<Cart>(_context);
+
+        public async Task<int> CompleteAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+    }
+
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    {
+        private readonly DbContext _context;
+        private readonly DbSet<T> _dbSet;
+
+        public GenericRepository(DbContext context)
+        {
+            _context = context;
+            _dbSet = context.Set<T>();
+        }
+
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await _dbSet.ToListAsync();
+        }
+
+        public async Task AddAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            _dbSet.Update(entity);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await _dbSet.FindAsync(id);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+            }
+        }
+
+        public IQueryable<T> Query()
+        {
+            return _dbSet.AsQueryable();  // This allows querying the DbSet directly
+        }
+    }
+
     // Ensure the 'MenuItems' class is defined
-    public class MenuItems
+    public class MenuItem
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string Available { get; set; }
+        public string ImageUrl { get; set; }
     }
 
-    // Ensure the 'User' class is defined (simplified example, you might already have a more complete User entity)
     public class User
     {
         public int Id { get; set; }
@@ -31,13 +116,9 @@ namespace DataAccess
         public int Quantity { get; set; }
         public decimal Price { get; set; }
 
-        // Navigation properties
-        //public User User { get; set; }
-        //public MenuItems MenuItem { get; set; }
 
-        // Fully qualified User class
         public DataAccess.User User { get; set; }
-        public MenuItems MenuItem { get; set; }
+        public MenuItem MenuItem { get; set; }
     }
 
     /// <summary>
@@ -50,8 +131,7 @@ namespace DataAccess
         }
 
         // DbSets for the tables
-        public DbSet<MenuItems> MenuItems { get; set; }
-        //public DbSet<User> Users { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
 
         public DbSet<DataAccess.User> Users { get; set; }
         public DbSet<Cart> Carts { get; set; }
@@ -60,7 +140,7 @@ namespace DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Set precision for Price in MenuItems
-            modelBuilder.Entity<MenuItems>()
+            modelBuilder.Entity<MenuItem>()
                 .Property(m => m.Price)
                 .HasPrecision(18, 2); // Precision: 18 digits, Scale: 2 decimal places
 
@@ -70,38 +150,42 @@ namespace DataAccess
                 .HasPrecision(18, 2);
 
             // Existing configurations
-            modelBuilder.Entity<MenuItems>().HasData(
-                new MenuItems
+            modelBuilder.Entity<MenuItem>().HasData(
+                new MenuItem
                 {
                     Id = 1,
                     Name = "Chapathi",
                     Description = "Soft and fresh chapathi",
                     Price = 12,
-                    Available = "Yes"
+                    Available = "Yes",
+                    ImageUrl = "https://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg"
                 },
-                new MenuItems
+                new MenuItem
                 {
                     Id = 2,
                     Name = "Dosa",
                     Description = "Crispy and delicious dosa",
                     Price = 15,
-                    Available = "Yes"
+                    Available = "Yes",
+                    ImageUrl = "https://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg"
                 },
-                new MenuItems
+                new MenuItem
                 {
                     Id = 3,
                     Name = "Idli",
                     Description = "Steamed rice cakes",
                     Price = 10,
-                    Available = "Yes"
+                    Available = "Yes",
+                    ImageUrl = "https://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg"
                 },
-                new MenuItems
+                new MenuItem
                 {
                     Id = 4,
                     Name = "Puri",
                     Description = "Deep-fried bread",
                     Price = 20,
-                    Available = "Yes"
+                    Available = "Yes",
+                    ImageUrl = "https://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg"
                 }
             );
 

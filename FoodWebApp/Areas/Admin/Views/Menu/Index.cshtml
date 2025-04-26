@@ -1,0 +1,28 @@
+@model IEnumerable<DataAccess.MenuItem>
+    @{
+  ViewData["Title"] = "Manage Menu";
+    }
+    <h2>Menu Items</h2>
+    <p>
+        <a class="btn btn-primary" asp-action="CreateItem">Add New Item</a>
+    </p>
+    <table class="table table-bordered">
+        <thead>
+            <tr><th>Name</th><th>Price</th><th>Available</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model) {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Available</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
