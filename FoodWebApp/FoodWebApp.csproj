@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Views\NewFolder1\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 
