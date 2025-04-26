@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Views\Menu\NewFolder\**" />
+    <Compile Remove="NewFolder\**" />
+    <Content Remove="Areas\Admin\Views\Menu\NewFolder\**" />
+    <Content Remove="NewFolder\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Menu\NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="Areas\Admin\Views\Menu\NewFolder\**" />
+    <None Remove="NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EventFlow.EntityFramework" Version="1.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
@@ -23,9 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Menu\NewFolder\" />
     <Folder Include="Controllers\" />
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>
