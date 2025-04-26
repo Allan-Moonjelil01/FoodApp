@@ -3,6 +3,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250426040151_AddInitialMigration")]
+    partial class AddInitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,10 +70,6 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -89,7 +88,6 @@ namespace DataAccess.Migrations
                             Id = 1,
                             Available = "Yes",
                             Description = "Soft and fresh chapathi",
-                            ImageUrl = "https://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg",
                             Name = "Chapathi",
                             Price = 12m
                         },
@@ -98,7 +96,6 @@ namespace DataAccess.Migrations
                             Id = 2,
                             Available = "Yes",
                             Description = "Crispy and delicious dosa",
-                            ImageUrl = "https://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg",
                             Name = "Dosa",
                             Price = 15m
                         },
@@ -107,7 +104,6 @@ namespace DataAccess.Migrations
                             Id = 3,
                             Available = "Yes",
                             Description = "Steamed rice cakes",
-                            ImageUrl = "https://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg",
                             Name = "Idli",
                             Price = 10m
                         },
@@ -116,7 +112,6 @@ namespace DataAccess.Migrations
                             Id = 4,
                             Available = "Yes",
                             Description = "Deep-fried bread",
-                            ImageUrl = "https://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg",
                             Name = "Puri",
                             Price = 20m
                         });

@@ -1,36 +1,43 @@
-using System.Diagnostics;
-using Models;
+using DataAccess;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using System.Threading.Tasks;
 
-namespace FoodWebApp.Areas.Customer.Controllers;
-
-/// 
-/// Customer Home Page Controller
-/// 
-
-[Area("Customer")]
-public class HomeController : Controller
+namespace FoodWebApp.Areas.Customer.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    [Area("Customer")]
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        private readonly IUnitOfWork _uow;
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        public HomeController(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        // Display the list of menu items  
+        public async Task<IActionResult> Index()
+        {
+            // Fetch all MenuItems from the database using DataAccess.MenuItems  
+            var menuItems = await _uow.MenuItem.GetAllAsync();
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            // Map DataAccess.MenuItems to Models.MenuItem  
+            var model = menuItems.Select(m => new Models.MenuItem
+            {
+                Id = m.Id,
+                Name = m.Name,
+                Description = m.Description,
+                Price = m.Price,
+                ImageUrl = m.ImageUrl,
+                IsAvailable = m.Available == "Yes"
+            }).ToList();
+
+            return View(model);  // Pass the mapped list to the view  
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
     }
 }

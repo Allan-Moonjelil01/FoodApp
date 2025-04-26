@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin | Food WebApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom mb-3">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <a class="navbar-brand fw-bold text-primary" asp-area="Admin" asp-controller="Menu" asp-action="Index">
+                    Food WebApp
+                </a>
+
+                <!-- Profile -->
+                <div class="d-flex ms-auto align-items-center">
+                    <img src="~/images/profile.png" alt="Profile" class="rounded-circle me-2" style="width:40px; height:40px;  />
+                    <span class="fw-semibold">Admin Sam</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="text-center py-3 border-top mt-4">
+        <small>&copy; 2025 Food WebApp Admin</small>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

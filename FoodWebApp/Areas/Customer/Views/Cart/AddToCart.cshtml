@@ -1,0 +1,11 @@
+@model Models.MenuItem
+
+<h2>@Model.Name</h2>
+<p>@Model.Description</p>
+<p>Price: @Model.Price</p>
+
+<form method="post" asp-action="AddToCart" asp-route-menuItemId="@Model.Id">
+    <label for="Quantity">Quantity</label>
+    <input type="number" id="Quantity" name="quantity" value="1" min="1" required />
+    <button type="submit" class="btn btn-success">Add to Cart</button>
+</form>

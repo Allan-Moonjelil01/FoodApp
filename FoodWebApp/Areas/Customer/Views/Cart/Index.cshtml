@@ -1,0 +1,46 @@
+@model IEnumerable<Models.Cart>
+
+<h2>Your Cart</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Menu Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MenuItem.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price</td>
+                <td>@(item.Quantity * item.Price)</td>
+                <td>
+                    <form method="post" asp-action="RemoveFromCart" asp-route-cartId="@item.Id">
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    decimal totalCost = 0;
+    foreach (var item in Model)
+    {
+        totalCost += item.Quantity * item.Price;
+    }
+}
+
+<div class="text-right">
+    <strong>Total: </strong>
+    @totalCost
+</div>
+
+<a href="@Url.Action("Index", "Home", new { area = "Customer" })" class="btn btn-primary">Continue Shopping</a>
