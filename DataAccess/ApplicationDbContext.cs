@@ -16,6 +16,7 @@ namespace DataAccess
     {
         IGenericRepository<T> Repository<T>() where T : class;
         IGenericRepository<MenuItem> MenuItem { get; }
+        IGenericRepository<MenuType> MenuType { get; }
         IGenericRepository<Cart> Carts { get; }
         Task<int> CompleteAsync();
     }
@@ -35,6 +36,7 @@ namespace DataAccess
 
         public IGenericRepository<MenuItem> MenuItem => new GenericRepository<MenuItem>(_context);
         public IGenericRepository<Cart> Carts => new GenericRepository<Cart>(_context);
+        public IGenericRepository<MenuType> MenuType => new GenericRepository<MenuType>(_context);
 
         public async Task<int> CompleteAsync()
         {
@@ -97,6 +99,8 @@ namespace DataAccess
         public decimal Price { get; set; }
         public string Available { get; set; }
         public string ImageUrl { get; set; }
+
+        public ICollection<MenuType> MenuTypes { get; set; } = new List<MenuType>();
     }
 
     public class User
@@ -119,6 +123,15 @@ namespace DataAccess
 
         public DataAccess.User User { get; set; }
         public MenuItem MenuItem { get; set; }
+    }
+
+    public class MenuType
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        // navigation to MenuItems
+        public ICollection<MenuItem> Meals { get; set; } = new List<MenuItem>();
     }
 
     /// <summary>
@@ -198,6 +211,16 @@ namespace DataAccess
                 .HasOne(c => c.MenuItem)
                 .WithMany()
                 .HasForeignKey(c => c.MenuItemId);
+
+            modelBuilder.Entity<MenuType>()
+                .HasMany(mt => mt.Meals)
+                .WithMany(mi => mi.MenuTypes)
+                .UsingEntity<Dictionary<string, object>>(
+                    "MenuTypeItem",
+                    j => j.HasOne<MenuItem>().WithMany().HasForeignKey("MenuItemId"),
+                    j => j.HasOne<MenuType>().WithMany().HasForeignKey("MenuTypeId"),
+                    j => j.ToTable("MenuTypeItems")
+      );
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
