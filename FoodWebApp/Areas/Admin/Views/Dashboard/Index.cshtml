@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Menu Management Card -->
+        <div class="col-md-6">
+            <a asp-area="Admin" asp-controller="Menu" asp-action="Index" class="text-decoration-none">
+                <div class="card h-100 shadow-sm">
+                    <img src="~/images/Menu.jpg"
+                         class="card-img-top"
+                         alt="Menu Management"
+                         style="height:200px; object-fit:cover;" />
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Menu Management</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Meal (Type) Management Card -->
+        <div class="col-md-6">
+            <a asp-area="Admin" asp-controller="MenuType" asp-action="Index" class="text-decoration-none">
+                <div class="card h-100 shadow-sm">
+                    <img src="~/images/Meal.jpg"
+                         class="card-img-top"
+                         alt="Meal Management"
+                         style="height:200px; object-fit:cover;" />
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Meal Management</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
