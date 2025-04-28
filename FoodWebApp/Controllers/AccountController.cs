@@ -54,7 +54,7 @@ public class AccountController : Controller
                     CookieAuthenticationDefaults.AuthenticationScheme));
         await HttpContext.SignInAsync(cp);
 
-        return RedirectToAction("Index", "Home", new { area = "Customer" });
+        return RedirectToAction("Index", "Home", new { area = "" });
     }
 
     // GET /Account/Register

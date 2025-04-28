@@ -45,24 +45,24 @@
                         </li>
                     </ul>
 
-                    <!-- new sign-in / logout button -->
+                    <!-- Sign-In / Logout button -->
                     <ul class="navbar-nav">
                         @if (User?.Identity?.IsAuthenticated ?? false)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-pink fw-bold" asp-area=""
-                                   asp-controller="Account" asp-action="Logout">
-                                    Logout
+                            <li class="nav-item me-3">
+                                <a class="nav-link text-pink fw-bold" asp-area="Customer"
+                                   asp-controller="Cart" asp-action="Index">
+                                    <i class="fas fa-shopping-cart"></i> Cart
                                 </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-pink fw-bold" asp-area=""
-                                   asp-controller="Account" asp-action="Login">
-                                    Sign In
-                                </a>
+                                <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Account" asp-action="Login" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In</a>
                             </li>
                         }
                     </ul>
@@ -75,6 +75,21 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Please Sign In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You must <a asp-area="" asp-controller="Account" asp-action="Login">log in</a> to add items to your cart.
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer class="text-success pt-4" style="background-color: #000;">
