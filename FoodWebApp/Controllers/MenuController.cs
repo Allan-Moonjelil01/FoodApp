@@ -1,27 +1,28 @@
+﻿// File: Controllers/MenuController.cs
 using DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace FoodWebApp.Areas.Customer.Controllers
+namespace FoodWebApp.Controllers
 {
-    [Area("Customer")]
-    public class HomeController : Controller
+    public class MenuController : Controller
     {
         private readonly IUnitOfWork _uow;
 
-        public HomeController(IUnitOfWork uow)
+        public MenuController(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        // Display the list of menu items  
+        // GET: /Menu
         public async Task<IActionResult> Index()
         {
-            // Fetch all MenuItems from the database using DataAccess.MenuItems  
+            // 1) Fetch all MenuItems from the database
             var menuItems = await _uow.MenuItem.GetAllAsync();
 
-            // Map DataAccess.MenuItems to Models.MenuItem  
+            // 2) Map DataAccess.MenuItem → Models.MenuItem
             var model = menuItems.Select(m => new Models.MenuItem
             {
                 Id = m.Id,
@@ -32,12 +33,8 @@ namespace FoodWebApp.Areas.Customer.Controllers
                 IsAvailable = m.Available == "Yes"
             }).ToList();
 
-            return View(model);  // Pass the mapped list to the view  
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            // 3) Render Views/Menu/Index.cshtml
+            return View(model);
         }
     }
 }

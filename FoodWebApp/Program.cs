@@ -1,5 +1,10 @@
-﻿using DataAccess;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
+using DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace FoodWebApp
 {
@@ -9,42 +14,77 @@ namespace FoodWebApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            // 1) MVC + API controllers
+            builder.Services.AddControllersWithViews();  // includes MVC + Authorization
+            // If you only need API controllers you could use AddControllers(),
+            // but AddControllersWithViews is fine since you also have views.
+
+            // 2) EF Core + your Repos/UoW
+            builder.Services.AddDbContext<ApplicationDbContext>(opts =>
+                opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+            // 3) Password hasher for your User entity
+            builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
-            // Register DBContext.
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); 
+            // 4) JWT Authentication
+            var jwt = builder.Configuration.GetSection("Jwt");
+            var key = Encoding.UTF8.GetBytes(jwt["Key"]);
+            builder.Services
+            .AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opts =>
+                {
+                opts.LoginPath = "/Account/Login";
+                opts.LogoutPath = "/Account/Logout";
+                opts.AccessDeniedPath = "/Account/AccessDenied";
+                opts.ExpireTimeSpan = TimeSpan.FromHours(1);
+                })
+               .AddJwtBearer(options =>
+               {
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuerSigningKey = true,
+                       IssuerSigningKey = new SymmetricSecurityKey(key),
+                       ValidateIssuer = true,
+                       ValidIssuer = jwt["Issuer"],
+                       ValidateAudience = true,
+                       ValidAudience = jwt["Audience"],
+                       ValidateLifetime = true,
+                       ClockSkew = TimeSpan.Zero
+                   };
+               });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // 5) Middleware pipeline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            // area‐aware first:
+            // 6) Routing for Areas + default MVC
             app.MapControllerRoute(
-              name: "areas",
-              pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            // fallback for non-area controllers:
-            app.MapControllerRoute(
-              name: "default",
-              pattern: "{controller=Home}/{action=Index}/{id?}");
+            // 7) Map attribute‐routed API controllers
+            app.MapControllers();
 
             app.Run();
         }

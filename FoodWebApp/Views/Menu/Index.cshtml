@@ -1,0 +1,24 @@
+@model IEnumerable<Models.MenuItem>
+
+<h2>Menu</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text"><strong>Price:</strong> @item.Price</p>
+                    <form method="post" asp-action="AddToCart" asp-route-menuItemId="@item.Id">
+                        <label for="Quantity">Quantity</label>
+                        <input type="number" id="Quantity" name="quantity" value="1" min="1" required class="form-control mb-2" />
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
