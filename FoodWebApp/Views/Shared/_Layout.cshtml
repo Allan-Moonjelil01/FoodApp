@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           integrity="sha512-…" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -62,7 +62,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Account" asp-action="Login" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In</a>
+                                <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
                             </li>
                         }
                     </ul>
@@ -72,8 +72,10 @@
     </header>
 
     <div class="container-fluid">
-        <main role="main" class="pb-3">
-            @RenderBody()
+        <main role="main" class="flex-grow-1 pb-3">
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
         </main>
     </div>
 
@@ -92,8 +94,39 @@
         </div>
     </div>
 
-    <footer class="text-success pt-4" style="background-color: #000;">
-        <!-- footer content unchanged -->
+    <footer class="mt-auto text-success pt-4 bg-dark" style="background-color: #000;">
+        <div class="container">
+            <div class="row">
+                <!-- App Name & Description -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="text-success">Food Web App</h5>
+                    <p>Your trusted destination for fresh, flavorful food—delivered right to your door.</p>
+                </div>
+
+                <!-- Connect With Us Section -->
+                <div class="col-md-4 mb-3">
+                    <h6 class="text-success">Connect With Us</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="https://wa.me/1234567890" target="_blank" class="text-success text-decoration-none"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                        <li><a href="mailto:info@foodwebapp.com" class="text-success text-decoration-none"><i class="fas fa-envelope"></i> Email Us</a></li>
+                        <li><a href="https://facebook.com/" target="_blank" class="text-success text-decoration-none"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="https://instagram.com/" target="_blank" class="text-success text-decoration-none"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    </ul>
+                </div>
+
+                <!-- Location & Hours Section -->
+                <div class="col-md-4 mb-3">
+                    <h6 class="text-success">Find Us</h6>
+                    <p class="mb-1">📍 Lower Hutt, Wellington</p>
+                    <p class="mb-1">🕒 Open Daily: 8:00 AM – 8:00 PM</p>
+                    <p>Monday to Sunday</p>
+                </div>
+            </div>
+
+            <div class="text-center border-top pt-3 mt-3">
+                <small>&copy; 2025 Created by Allan & Sam | All rights reserved.</small>
+            </div>
+        </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

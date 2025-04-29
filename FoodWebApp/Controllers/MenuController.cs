@@ -23,14 +23,14 @@ namespace FoodWebApp.Controllers
             var menuItems = await _uow.MenuItem.GetAllAsync();
 
             // 2) Map DataAccess.MenuItem → Models.MenuItem
-            var model = menuItems.Select(m => new Models.MenuItem
+            var model = menuItems.Select(m => new DataAccess.MenuItem
             {
                 Id = m.Id,
                 Name = m.Name,
                 Description = m.Description,
                 Price = m.Price,
                 ImageUrl = m.ImageUrl,
-                IsAvailable = m.Available == "Yes"
+                Available = m.Available
             }).ToList();
 
             // 3) Render Views/Menu/Index.cshtml

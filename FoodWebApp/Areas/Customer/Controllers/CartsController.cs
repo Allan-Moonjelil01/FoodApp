@@ -6,7 +6,7 @@ using System.Security.Claims;
 namespace FoodWebApp.Controllers.Api
 {
     [ApiController]
-    [Route("api/cart-items")]  // Changed route to avoid conflict
+    [Route("api/cart-items")]
     public class CartsController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
@@ -21,12 +21,12 @@ namespace FoodWebApp.Controllers.Api
         [Authorize]  // Ensure the user is authenticated
         public async Task<IActionResult> Post([FromBody] CartItemDto dto)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); // Get the user ID from the claim
-            var menuItem = await _uow.MenuItem.GetByIdAsync(dto.MenuItemId); // Get the menu item from the DB
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); 
+            var menuItem = await _uow.MenuItem.GetByIdAsync(dto.MenuItemId);
 
             if (menuItem == null)
             {
-                return NotFound(); // Return 404 if the menu item is not found
+                return NotFound();
             }
 
             // Create a new cart item
@@ -38,10 +38,10 @@ namespace FoodWebApp.Controllers.Api
                 Price = menuItem.Price
             };
 
-            await _uow.Carts.AddAsync(cartItem);  // Add the cart item to the database
-            await _uow.CompleteAsync();  // Save changes to the database
+            await _uow.Carts.AddAsync(cartItem);  
+            await _uow.CompleteAsync();  
 
-            return Ok();  // Return success response
+            return Ok();
         }
     }
 }

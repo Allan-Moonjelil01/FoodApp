@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using DataAccess;
-using Models;               // your RegisterRequest & LoginRequest
+using Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,17 +45,28 @@ public class AccountController : Controller
 
         // build claims + sign in cookie
         var claims = new List<Claim> {
-          new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-          new Claim(ClaimTypes.Name, user.Username),
-          new Claim(ClaimTypes.Role, user.Role==0 ? "Admin":"Customer")
-        };
+      new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+      new Claim(ClaimTypes.Name, user.Username),
+      new Claim(ClaimTypes.Role, user.Role==0 ? "Admin" : "Customer")
+    };
         var cp = new ClaimsPrincipal(
                   new ClaimsIdentity(claims,
                     CookieAuthenticationDefaults.AuthenticationScheme));
         await HttpContext.SignInAsync(cp);
 
-        return RedirectToAction("Index", "Home", new { area = "" });
+        // redirect based on user.Role
+        if (user.Role == 0)
+        {
+            // Admin
+            return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+        }
+        else
+        {
+            // Customer
+            return RedirectToAction("Index", "Home", new { area = "Customer" });
+        }
     }
+
 
     // GET /Account/Register
     [HttpGet]
