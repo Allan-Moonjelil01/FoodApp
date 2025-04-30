@@ -134,6 +134,12 @@ namespace DataAccess
         public ICollection<MenuItem> Meals { get; set; } = new List<MenuItem>();
     }
 
+    public class CartItemDto
+    {
+        public int MenuItemId { get; set; }
+        public int Quantity { get; set; }
+    }
+
     /// <summary>
     /// Used for Database Operations
     /// </summary>

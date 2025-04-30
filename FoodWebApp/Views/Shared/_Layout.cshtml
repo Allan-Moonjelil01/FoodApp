@@ -8,29 +8,63 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FoodWebApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+          integrity="sha512-…" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand text-orange fw-bolder" asp-area="" asp-controller="Home" asp-action="Index">Food WebApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand text-orange fw-bolder"
+                   asp-area="" asp-controller="Home" asp-action="Index">
+                    Food WebApp
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-pink fw-bold"
+                               asp-area="" asp-controller="Home" asp-action="Index">
+                                Home
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-pink fw-bold" asp-area="Customer" asp-controller="Recipe" asp-action="RecipeIndex">Recipes</a>
+                            <a class="nav-link text-pink fw-bold"
+                               asp-area="Customer" asp-controller="Recipe" asp-action="RecipeIndex">
+                                Recipes
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="text-pink nav-link fw-bold" asp-area="" asp-controller="Menu" asp-action="Index">Menu</a>
+                            <a class="nav-link text-pink fw-bold"
+                               asp-area="" asp-controller="Menu" asp-action="Index">
+                                Menu
+                            </a>
                         </li>
+                    </ul>
+
+                    <!-- Sign-In / Logout button -->
+                    <ul class="navbar-nav">
+                        @if (User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li class="nav-item me-3">
+                                <a class="nav-link text-pink fw-bold" asp-area="Customer"
+                                   asp-controller="Cart" asp-action="Index">
+                                    <i class="fas fa-shopping-cart"></i> Cart
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -38,12 +72,29 @@
     </header>
 
     <div class="container-fluid">
-        <main role="main" class="pb-3">
-            @RenderBody()
+        <main role="main" class="flex-grow-1 pb-3">
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
         </main>
     </div>
 
-    <footer class="text-success pt-4" style="background-color: #000;">
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Please Sign In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You must <a asp-area="" asp-controller="Account" asp-action="Login">log in</a> to add items to your cart.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto text-success pt-4 bg-dark" style="background-color: #000;">
         <div class="container">
             <div class="row">
                 <!-- App Name & Description -->

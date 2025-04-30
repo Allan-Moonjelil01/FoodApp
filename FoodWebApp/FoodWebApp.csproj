@@ -8,17 +8,27 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Admin\Views\Menu\NewFolder\**" />
+    <Compile Remove="Areas\Admin\Views\NewFolder1\**" />
+    <Compile Remove="Areas\Customer\Views\NewFolder\**" />
     <Compile Remove="NewFolder\**" />
     <Content Remove="Areas\Admin\Views\Menu\NewFolder\**" />
+    <Content Remove="Areas\Admin\Views\NewFolder1\**" />
+    <Content Remove="Areas\Customer\Views\NewFolder\**" />
     <Content Remove="NewFolder\**" />
     <EmbeddedResource Remove="Areas\Admin\Views\Menu\NewFolder\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\NewFolder1\**" />
+    <EmbeddedResource Remove="Areas\Customer\Views\NewFolder\**" />
     <EmbeddedResource Remove="NewFolder\**" />
     <None Remove="Areas\Admin\Views\Menu\NewFolder\**" />
+    <None Remove="Areas\Admin\Views\NewFolder1\**" />
+    <None Remove="Areas\Customer\Views\NewFolder\**" />
     <None Remove="NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EventFlow.EntityFramework" Version="1.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
@@ -31,11 +41,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Views\NewFolder1\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
