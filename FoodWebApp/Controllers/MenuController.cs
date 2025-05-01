@@ -1,5 +1,4 @@
-﻿// File: Controllers/MenuController.cs
-using DataAccess;
+﻿using DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Linq;

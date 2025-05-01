@@ -29,21 +29,5 @@ namespace FoodWebApp.Areas.Customer.Controllers
 
             return View(cartItems);  // Passing the cart items to the view
         }
-
-        // POST: /Customer/Cart/RemoveFromCart/5
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> RemoveFromCart(int id)
-        {
-            var cartItem = await _uow.Carts.GetByIdAsync(id);
-            if (cartItem == null)
-            {
-                return NotFound();
-            }
-
-            await _uow.Carts.DeleteAsync(id);
-            await _uow.CompleteAsync();
-            return RedirectToAction(nameof(Index));  // Redirect back to the Cart page after removal
-        }
     }
 }
