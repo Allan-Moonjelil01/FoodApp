@@ -43,5 +43,18 @@ namespace FoodWebApp.Controllers.Api
 
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var cartItem = await _uow.Carts.GetByIdAsync(id);
+            if (cartItem == null) return NotFound();
+
+            await _uow.Carts.DeleteAsync(id);
+            await _uow.CompleteAsync();
+            return Ok();
+        }
+
     }
 }

@@ -1,11 +1,26 @@
-@model DataAccess.MenuItem
+<label for="Quantity">Quantity</label>
+<input type="number" id="Quantity" value="1" min="1" required />
+<button onclick="addToCart(@Model.Id)" class="btn btn-success">Add to Cart</button>
 
-<h2>@Model.Name</h2>
-<p>@Model.Description</p>
-<p>Price: @Model.Price</p>
+<script>
+    async function addToCart(menuItemId) {
+        const quantity = document.getElementById("Quantity").value;
 
-<form method="post" asp-action="AddToCart" asp-route-menuItemId="@Model.Id">
-    <label for="Quantity">Quantity</label>
-    <input type="number" id="Quantity" name="quantity" value="1" min="1" required />
-    <button type="submit" class="btn btn-success">Add to Cart</button>
-</form>
+        const response = await fetch('/api/cart-items', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                menuItemId: menuItemId,
+                quantity: parseInt(quantity)
+            })
+        });
+
+        if (response.ok) {
+            alert('Item added to cart!');
+        } else {
+            alert('Error adding to cart');
+        }
+    }
+</script>

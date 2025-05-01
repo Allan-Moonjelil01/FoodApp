@@ -1,28 +1,150 @@
-@model IEnumerable<DataAccess.MenuItem>
-    @{
-  ViewData["Title"] = "Manage Menu";
-    }
-    <h2>Menu Items</h2>
-    <p>
-        <a class="btn btn-primary" asp-action="CreateItem">Add New Item</a>
-    </p>
-    <table class="table table-bordered">
-        <thead>
-            <tr><th>Name</th><th>Price</th><th>Available</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-            @foreach(var item in Model) {
-            <tr>
-                <td>@item.Name</td>
-                <td>@item.Price</td>
-                <td>@item.Available</td>
-                <td>
-                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>
+@{
+    ViewData["Title"] = "Manage Menu";
+}
+
+<h2>Menu Items</h2>
+<button class="btn btn-primary mb-3" onclick="showCreateForm()">Add New Item</button>
+
+<table class="table table-bordered" id="menuTable">
+    <thead>
+        <tr><th>Name</th><th>Price</th><th>Available</th><th>Actions</th></tr>
+    </thead>
+    <tbody id="menuBody">
+    </tbody>
+</table>
+
+<!-- Modal for Create/Edit -->
+<div class="modal fade" id="menuModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="menuForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Add Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="menuId">
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <textarea id="description" class="form-control" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Price</label>
+                        <input type="number" step="0.01" id="price" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Image URL</label>
+                        <input type="text" id="imageUrl" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label>Available</label>
+                        <select id="available" class="form-select">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadMenuItems();
+
+            document.getElementById('menuForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                saveMenuItem();
+            });
+        });
+
+        function loadMenuItems() {
+            fetch('/api/menuitems')
+                .then(res => res.json())
+                .then(data => {
+                    const body = document.getElementById('menuBody');
+                    body.innerHTML = "";
+                    data.forEach(item => {
+                        body.innerHTML += `
+                            <tr>
+                                <td>${item.name}</td>
+                                <td>${item.price}</td>
+                                <td>${item.isAvailable ? 'Yes' : 'No'}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning" onclick="editItem(${item.id})">Edit</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteItem(${item.id})">Delete</button>
+                                </td>
+                            </tr>`;
+                    });
+                });
+        }
+
+        function showCreateForm() {
+            document.getElementById('menuForm').reset();
+            document.getElementById('menuId').value = "";
+            document.getElementById('modalTitle').innerText = "Add Item";
+            new bootstrap.Modal(document.getElementById('menuModal')).show();
+        }
+
+        function editItem(id) {
+            fetch(`/api/menuitems/${id}`)
+                .then(res => res.json())
+                .then(item => {
+                    document.getElementById('menuId').value = item.id;
+                    document.getElementById('name').value = item.name;
+                    document.getElementById('description').value = item.description;
+                    document.getElementById('price').value = item.price;
+                    document.getElementById('imageUrl').value = item.imageUrl;
+                    document.getElementById('available').value = item.isAvailable;
+                    document.getElementById('modalTitle').innerText = "Edit Item";
+                    new bootstrap.Modal(document.getElementById('menuModal')).show();
+                });
+        }
+
+        function saveMenuItem() {
+            const id = document.getElementById('menuId').value;
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `/api/menuitems/${id}` : '/api/menuitems';
+            const item = {
+                id: parseInt(id),
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                price: parseFloat(document.getElementById('price').value),
+                imageUrl: document.getElementById('imageUrl').value,
+                isAvailable: document.getElementById('available').value === "true"
+            };
+
+            fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(item)
+            }).then(res => {
+                if (res.ok) {
+                    bootstrap.Modal.getInstance(document.getElementById('menuModal')).hide();
+                    loadMenuItems();
+                } else {
+                    alert("Error saving item");
+                }
+            });
+        }
+
+        function deleteItem(id) {
+            if (!confirm("Are you sure?")) return;
+            fetch(`/api/menuitems/${id}`, { method: 'DELETE' })
+                .then(res => {
+                    if (res.ok) loadMenuItems();
+                    else alert("Failed to delete");
+                });
+        }
+    </script>
+}
