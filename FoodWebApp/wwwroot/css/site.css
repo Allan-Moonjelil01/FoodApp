@@ -605,3 +605,12 @@ bg-success {
         border-color: #578553;
     }
 
+.card img {
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+}
+.card-img-top {
+    height: 200px; /* Adjust this height as needed */
+    object-fit: cover; /* This ensures images maintain aspect ratio and fit nicely */
+}
