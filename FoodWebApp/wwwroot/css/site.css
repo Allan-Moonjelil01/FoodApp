@@ -614,3 +614,29 @@ bg-success {
     height: 200px; /* Adjust this height as needed */
     object-fit: cover; /* This ensures images maintain aspect ratio and fit nicely */
 }
+.card-img-top {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-body {
+    flex-grow: 1;
+}
+.emboss-card {
+    border-radius: 10px;
+    border: 1px solid #d4d4d4;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), -5px -5px 10px rgba(255, 255, 255, 0.6);
+    transition: transform 0.2s ease-in-out;
+}
+
+    .emboss-card:hover {
+        transform: scale(1.02);
+    }
