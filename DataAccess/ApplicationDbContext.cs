@@ -134,6 +134,38 @@ namespace DataAccess
         public ICollection<MenuItem> Meals { get; set; } = new List<MenuItem>();
     }
 
+    public class OrderItem
+    {
+        public int Id { get; set; }
+
+        public int OrderId { get; set; }
+
+        public int MenuItemId { get; set; }
+
+        public int Quantity { get; set; }
+
+        public decimal UnitPrice { get; set; }
+
+        public Order Order { get; set; }
+        public MenuItem MenuItem { get; set; }
+    }
+
+    public class Order
+    {
+        public int Id { get; set; }
+
+        public int UserId { get; set; }
+
+        public DateTime OrderDate { get; set; }
+
+        public string Status { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public User User { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    }
+
     public class CartItemDto
     {
         public int MenuItemId { get; set; }
@@ -226,7 +258,18 @@ namespace DataAccess
                     j => j.HasOne<MenuItem>().WithMany().HasForeignKey("MenuItemId"),
                     j => j.HasOne<MenuType>().WithMany().HasForeignKey("MenuTypeId"),
                     j => j.ToTable("MenuTypeItems")
-      );
+                );
+
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderItems)
+                .WithOne(oi => oi.Order)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.MenuItem)
+                .WithMany()
+                .HasForeignKey(oi => oi.MenuItemId);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
