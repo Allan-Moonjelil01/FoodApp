@@ -13,11 +13,14 @@ namespace FoodWebApp.Controllers.Api
     public class MenuItemsController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
+        private readonly IWebHostEnvironment _env;
 
-        public MenuItemsController(IUnitOfWork uow)
+        public MenuItemsController(IUnitOfWork uow, IWebHostEnvironment env)
         {
             _uow = uow;
+            _env = env;
         }
+
 
         // GET api/menuitems
         [HttpGet]
@@ -108,6 +111,30 @@ namespace FoodWebApp.Controllers.Api
             await _uow.MenuItem.DeleteAsync(id);
             await _uow.CompleteAsync();
             return NoContent();
+        }
+
+        // POST api/menuitems/upload
+        [HttpPost("upload")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> UploadImage([FromForm] IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded.");
+
+            // wwwroot/images/menu
+            var imagesPath = Path.Combine(_env.WebRootPath, "images", "menu");
+            if (!Directory.Exists(imagesPath))
+                Directory.CreateDirectory(imagesPath);
+
+            var ext = Path.GetExtension(file.FileName);
+            var fileName = $"{Guid.NewGuid()}{ext}";
+            var fullPath = Path.Combine(imagesPath, fileName);
+
+            using var stream = new FileStream(fullPath, FileMode.Create);
+            await file.CopyToAsync(stream);
+
+            var url = $"/images/menu/{fileName}";
+            return Ok(new { url });
         }
     }
 }

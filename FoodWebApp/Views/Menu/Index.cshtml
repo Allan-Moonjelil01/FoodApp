@@ -7,12 +7,11 @@
     {
         <div class="col-md-4">
             <div class="card mb-3">
-                <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name">
+                <img src="@item.ImageUrl" class="card-img-top img-card" alt="@item.Name">
                 <div class="card-body">
                     <h5 class="card-title">@item.Name</h5>
                     <p class="card-text">@item.Description</p>
                     <p class="card-text"><strong>Price:</strong> @item.Price</p>
-                    <!-- Removing form tag, we will handle the add to cart via AJAX -->
                     <label for="Quantity_@item.Id">Quantity</label>
                     <input type="number" id="Quantity_@item.Id" name="quantity" value="1" min="1" required class="form-control mb-2" />
                     <button type="button" class="btn btn-primary add-to-cart-btn" data-id="@item.Id">Add to Cart</button>
@@ -25,14 +24,12 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
-            // Handling "Add to Cart" button click
             $('.add-to-cart-btn').click(function() {
                 const menuItemId = $(this).data('id');
-                const quantity = parseInt($('#Quantity_' + menuItemId).val());  // Dynamic selector for quantity input
+                const quantity = parseInt($('#Quantity_' + menuItemId).val());
 
-                // Make a request to add the item to the cart
                 $.ajax({
-                    url: '/api/cart-items', // The API route to add to cart
+                    url: '/api/cart-items',
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({
@@ -44,7 +41,6 @@
                     },
                     error: function(response) {
                         if (response.status === 401) {
-                            // Show login modal if not authenticated
                             var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
                             loginModal.show();
                         } else {
@@ -56,3 +52,4 @@
         });
     </script>
 }
+
