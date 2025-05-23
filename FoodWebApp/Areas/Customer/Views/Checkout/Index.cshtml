@@ -1,0 +1,30 @@
+﻿@model Models.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h2>Checkout</h2>
+
+<p>You are about to pay <strong>@Model.TotalAmount.ToString("C")</strong>.</p>
+
+<button id="payButton" class="btn btn-primary">Pay Now</button>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        document.getElementById("payButton").addEventListener("click", async () => {
+          const resp = await fetch('/api/payments/create-checkout-session', {
+            method: 'POST',
+            credentials: 'include'
+          });
+          const data = await resp.json();
+
+          if (resp.ok) {
+            const stripe = Stripe("@Model.PublishableKey");
+            await stripe.redirectToCheckout({ sessionId: data.sessionId });
+          } else {
+            alert(data.error || "Could not start Stripe checkout.");
+          }
+        });
+    </script>
+}

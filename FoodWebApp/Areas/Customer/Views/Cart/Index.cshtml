@@ -30,7 +30,12 @@
 
 <p><strong>Total:</strong> @Model.Sum(i => i.Price * i.Quantity).ToString("C")</p>
 
-<a class="btn btn-dark">Continue Shopping</a>
+<a asp-area="Customer"
+   asp-controller="Checkout"
+   asp-action="Index"
+   class="btn btn-primary">
+    Proceed to Checkout
+</a>
 
 <script>
     async function removeFromCart(id) {
@@ -39,7 +44,6 @@
         });
 
         if (response.ok) {
-            // Remove the row from the DOM
             document.getElementById(`cart-item-${id}`).remove();
         } else {
             alert("Failed to remove item.");
