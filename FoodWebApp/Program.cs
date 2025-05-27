@@ -1,5 +1,9 @@
-using DataAccess;
+using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Utility;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace FoodWebApp
 {
@@ -15,6 +19,15 @@ namespace FoodWebApp
             // Register DBContext.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); 
+                
+
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+            builder.Services.AddRazorPages();
+
+            builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+
 
             var app = builder.Build();
 
@@ -31,7 +44,11 @@ namespace FoodWebApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "default",
