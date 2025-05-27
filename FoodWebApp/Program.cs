@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using FoodWebApp.Utility;
+using Stripe;
 
 namespace FoodWebApp
 {
@@ -14,21 +16,24 @@ namespace FoodWebApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // 1) MVC + API controllers
+            // MVC + API controllers
             builder.Services.AddControllersWithViews();  // includes MVC + Authorization
-            // If you only need API controllers you could use AddControllers(),
-            // but AddControllersWithViews is fine since you also have views.
 
-            // 2) EF Core + your Repos/UoW
+            // EF Core +  Repos/UoW
             builder.Services.AddDbContext<ApplicationDbContext>(opts =>
                 opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-            // 3) Password hasher for your User entity
+            // Password hasher for User entity
             builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
-            // 4) JWT Authentication
+            //Stripe Configuration
+
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Value;
+
+            // JWT Authentication
             var jwt = builder.Configuration.GetSection("Jwt");
             var key = Encoding.UTF8.GetBytes(jwt["Key"]);
             builder.Services
@@ -61,7 +66,8 @@ namespace FoodWebApp
 
             var app = builder.Build();
 
-            // 5) Middleware pipeline
+
+            // Middleware pipeline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -75,7 +81,7 @@ namespace FoodWebApp
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // 6) Routing for Areas + default MVC
+            // Routing for Areas + default MVC
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
@@ -83,7 +89,7 @@ namespace FoodWebApp
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            // 7) Map attribute‐routed API controllers
+            // Map attribute‐routed API controllers
             app.MapControllers();
 
             app.Run();

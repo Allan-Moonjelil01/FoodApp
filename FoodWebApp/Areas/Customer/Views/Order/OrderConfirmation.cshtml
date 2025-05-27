@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<h2>Thank you for your order!</h2>
+
+<p>Your payment session ID: @ViewData["SessionId"]</p>
+
+<p>You will receive an email confirmation shortly.</p>
+
+<a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-primary">
+    Return to Home
+</a>
