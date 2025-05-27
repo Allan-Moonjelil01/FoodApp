@@ -28,7 +28,7 @@
     </tbody>
 </table>
 
-<p><strong>Total:</strong> @Model.Sum(i => i.Price * i.Quantity).ToString("C")</p>
+<p><strong>Total:</strong> <span id="totalAmount">@Model.Sum(i => i.Price * i.Quantity).ToString("C")</span></p>
 
 <a asp-area="Customer"
    asp-controller="Checkout"
@@ -44,9 +44,28 @@
         });
 
         if (response.ok) {
-            document.getElementById(`cart-item-${id}`).remove();
+            const row = document.getElementById(`cart-item-${id}`);
+            if (row) row.remove();
+            updateTotal();
         } else {
             alert("Failed to remove item.");
         }
+    }
+
+    function updateTotal() {
+        let total = 0;
+        const rows = document.querySelectorAll('tbody tr[id^="cart-item-"]');
+        rows.forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            if (cells.length >= 4) {
+                const price = parseFloat(cells[2].textContent);
+                const quantity = parseInt(cells[1].textContent);
+                total += price * quantity;
+            }
+        });
+
+        const formattedTotal = total.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+
+        document.getElementById('totalAmount').textContent = formattedTotal;
     }
 </script>
