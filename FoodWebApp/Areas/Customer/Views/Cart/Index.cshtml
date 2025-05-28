@@ -30,12 +30,23 @@
 
 <p><strong>Total:</strong> <span id="totalAmount">@Model.Sum(i => i.Price * i.Quantity).ToString("C")</span></p>
 
-<a asp-area="Customer"
-   asp-controller="Checkout"
-   asp-action="Index"
-   class="btn btn-primary">
-    Proceed to Checkout
-</a>
+
+<div class="mt-4 d-flex gap-3">
+    <a asp-controller="Menu"
+       asp-action="Index"
+       asp-area=""
+       class="btn btn-success custom-checkout-btn">
+        Continue Shopping
+    </a>
+
+
+    <a asp-area="Customer"
+       asp-controller="Checkout"
+       asp-action="Index"
+       class="btn btn-success custom-checkout-btn">
+        Proceed to Checkout
+    </a>
+</div>
 
 <script>
     async function removeFromCart(id) {
@@ -64,7 +75,7 @@
             }
         });
 
-        const formattedTotal = total.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+        const formattedTotal = total.toLocaleString(undefined, { style: 'currency', currency: 'NZD' });
 
         document.getElementById('totalAmount').textContent = formattedTotal;
     }

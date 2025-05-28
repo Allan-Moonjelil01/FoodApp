@@ -1,19 +1,19 @@
 @model IEnumerable<DataAccess.MenuItem>
 
-<h2>Menu</h2>
+<h2>Our Menu</h2>
 
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-md-4">
-            <div class="card mb-3">
+        <div class="col-md-3">
+            <div class="card mb-5">
                 <img src="@item.ImageUrl" class="card-img-top img-card" alt="@item.Name">
                 <div class="card-body">
                     <h5 class="card-title">@item.Name</h5>
                     <p class="card-text">@item.Description</p>
                     <p class="card-text"><strong>Price:</strong> @item.Price</p>
                     <label for="Quantity_@item.Id">Quantity</label>
-                    <input type="number" id="Quantity_@item.Id" name="quantity" value="1" min="1" required class="form-control mb-2" />
+                    <input type="number" id="Quantity_@item.Id" name="quantity" value="1" min="1" required class="form-control mb-3" />
                     <button type="button" class="btn btn-primary add-to-cart-btn" data-id="@item.Id">Add to Cart</button>
                 </div>
             </div>
