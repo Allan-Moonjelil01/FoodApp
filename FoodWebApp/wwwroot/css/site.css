@@ -687,4 +687,12 @@ form .form-control {
     font-weight: 500;
 }
 
+emboss-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.emboss-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+}
