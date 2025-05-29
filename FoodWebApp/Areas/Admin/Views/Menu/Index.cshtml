@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Manage Menu";
+}
+
+<h2>Menu Items</h2>
+<button class="btn btn-primary mb-3" onclick="showCreateForm()">Add New Item</button>
+
+<table class="table table-bordered" id="menuTable">
+    <thead>
+        <tr><th>Name</th><th>Price</th><th>Available</th><th>Actions</th></tr>
+    </thead>
+    <tbody id="menuBody">
+    </tbody>
+</table>
