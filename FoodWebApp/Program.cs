@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using DataAccess.Repository.IRepository;
+using DataAccess.Repository;
 
 namespace FoodWebApp
 {
@@ -25,7 +27,11 @@ namespace FoodWebApp
 
             builder.Services.AddRazorPages();
 
-            builder.Services.AddScoped<IEmailSender, EmailSender>();
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+            builder.Services.AddScoped<IMealRepository, MealRepository>();
+
+            builder.Services.AddScoped<IMealTypeRepository, MealTypeRepository>();
 
 
 

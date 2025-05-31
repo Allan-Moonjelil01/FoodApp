@@ -33,9 +33,18 @@ namespace DataAccess.Repository
             return query.FirstOrDefault();
         }
 
+
+
         IEnumerable<T> IRepository<T>.GetAll()
         {
             IQueryable<T> query = dbSet;
+            return query.ToList();
+        }
+
+        IEnumerable<T> IRepository<T>.GetList(Expression<Func<T, bool>> filter)
+        {
+            IQueryable<T> query = dbSet;
+            query = query.Where(filter);
             return query.ToList();
         }
 

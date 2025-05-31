@@ -7,7 +7,7 @@
 
 <table class="table table-bordered" id="menuTable">
     <thead>
-        <tr><th>Name</th><th>Price</th><th>Available</th><th>Actions</th></tr>
+        <tr><th>Name</th><th>Price</th><th>Actions</th></tr>
     </thead>
     <tbody id="menuBody">
     </tbody>
@@ -62,7 +62,7 @@
         });
 
         function loadMenuItems() {
-            fetch('/api/menuitems')
+            fetch('/api/meal')
                 .then(res => res.json())
                 .then(data => {
                     const body = document.getElementById('menuBody');
@@ -89,7 +89,7 @@
         }
 
         function editItem(id) {
-            fetch(`/api/menuitems/${id}`)
+            fetch(`/api/meal/${id}`)
                 .then(res => res.json())
                 .then(item => {
                     document.getElementById('menuId').value = item.id;
@@ -105,14 +105,16 @@
         function saveMenuItem() {
             const id = document.getElementById('menuId').value;
             const method = id ? 'PUT' : 'POST';
-            const url = id ? `/api/menuitems/${id}` : '/api/menuitems';
+            const url = id ? `/api/meal/${id}` : '/api/meal';
             const item = {
-                id: parseInt(id),
                 name: document.getElementById('name').value,
                 description: document.getElementById('description').value,
                 price: parseFloat(document.getElementById('price').value),
                 imageUrl: document.getElementById('imageUrl').value,
             };
+            if (id) {
+            item.id = parseInt(id);  // only add id for PUT
+        }
 
             fetch(url, {
                 method: method,
@@ -123,6 +125,7 @@
                     bootstrap.Modal.getInstance(document.getElementById('menuModal')).hide();
                     loadMenuItems();
                 } else {
+                    res.text().then(text => console.error("Error details:", text));
                     alert("Error saving item");
                 }
             });
@@ -130,7 +133,7 @@
 
         function deleteItem(id) {
             if (!confirm("Are you sure?")) return;
-            fetch(`/api/menuitems/${id}`, { method: 'DELETE' })
+            fetch(`/api/meal/${id}`, { method: 'DELETE' })
                 .then(res => {
                     if (res.ok) loadMenuItems();
                     else alert("Failed to delete");
