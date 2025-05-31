@@ -17,5 +17,16 @@ public class MenuTypeController : Controller
     new MealType { Id = 2, Name = "Lunch" }};
         return View(menuTypes);
     }
+
+    public async Task<IActionResult> Create()
+    {
+        return View(new CreateMealTypeViewModel());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateMealTypeViewModel vm)
+    {
+        return RedirectToAction(nameof(Index));
+    }
 }
 
