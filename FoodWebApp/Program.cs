@@ -33,6 +33,8 @@ namespace FoodWebApp
 
             builder.Services.AddScoped<IMealTypeRepository, MealTypeRepository>();
 
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
+
 
 
             var app = builder.Build();
@@ -56,9 +58,13 @@ namespace FoodWebApp
 
             app.MapRazorPages();
 
+            // Routing for Areas + default MVC
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

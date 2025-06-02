@@ -22,10 +22,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-pink fw-bold"
+                               asp-area="" asp-controller="Home" asp-action="Index">
+                                Home
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-pink fw-bold" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-pink fw-bold"
+                               asp-area="Customer" asp-controller="Recipe" asp-action="RecipeIndex">
+                                Meal Types
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-pink fw-bold"
+                               asp-area="" asp-controller="Menu" asp-action="Index">
+                                Available Meals
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -39,6 +51,21 @@
             @RenderBody()
             </div>
         </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Please Sign In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You must <a asp-area="Identity" asp-page="/Account/Login">log in</a> to add items to your cart.
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer class="mt-auto text-success pt-4 bg-dark" style="background-color: #000;">

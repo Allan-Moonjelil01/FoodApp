@@ -23,6 +23,9 @@ namespace DataAccess.Data
         public DbSet<Meal> Meal { get; set; }
 
         public DbSet<MealType> MealType { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

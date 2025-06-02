@@ -1,0 +1,63 @@
+@model IEnumerable<MealType>
+
+<h2 class="mb-4">Our Menu</h2>
+
+<div class="row">
+    @foreach (var meal in Model.SelectMany(mt => mt.Meals))
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="@meal.ImageUrl" class="card-img-top" alt="@meal.Name" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@meal.Name</h5>
+                    <p class="card-text flex-grow-1">@meal.Description</p>
+                    <p class="card-text"><strong>Price:</strong> $@meal.Price</p>
+
+                    <div class="mt-auto">
+                        <div class="form-group mb-3">
+                            <label for="Quantity_@meal.Id">Quantity</label>
+                            <input type="number" id="Quantity_@meal.Id" name="quantity"
+                                   required class="form-control mb-3" value="1" min="1" style="width: 80px;">
+                        </div>
+                        <button type="button" class="btn btn-primary w-100 add-to-cart-btn"
+                                data-id="@meal.Id">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.add-to-cart-btn').click(function() {
+                const mealId = $(this).data('id');
+                const quantity = parseInt($('#Quantity_' + mealId).val());
+
+                $.ajax({
+                    url: '/api/cart-items',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        mealId: mealId,
+                        quantity: quantity
+                    }),
+                    success: function(response) {
+                       alert('Added to Cart!');
+                    },
+                    error: function(response) {
+                           if (response.status === 401) {
+                            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                            loginModal.show();
+                        } else {
+                            alert('Error adding to cart');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
