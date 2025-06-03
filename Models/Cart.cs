@@ -1,20 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
     public class Cart
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public int MenuItemId { get; set; }
+
+       
+        public string? UserId { get; set; }
+
+        [Required]
+        public int MealId { get; set; }
+
+        [Required]
         public int Quantity { get; set; }
+
         public decimal Price { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
-        public Meal meal { get; set; }
+        // Prevent binding and validation
+
+
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser? ApplicationUser { get; set; }
+
+
+        [ForeignKey(nameof(MealId))]
+        public Meal? Meal { get; set; }
     }
 }

@@ -10,6 +10,8 @@ namespace DataAccess.Repository.IRepository
     public interface IRepository<T> where T:class
     {
         IEnumerable<T> GetAll();
+
+        IQueryable<T> GetAllAlongWithLinked();
         T Get(Expression<Func<T, bool>> filter);
 
         IEnumerable<T> GetList(Expression<Func<T, bool>> filter);

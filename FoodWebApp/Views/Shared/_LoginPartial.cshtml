@@ -10,10 +10,9 @@
         <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
     </li>
         <li class="nav-item me-3">
-            <a class="nav-link text-pink fw-bold" asp-area="Customer"
-               asp-controller="Cart" asp-action="Index">
-                <i class="fas fa-shopping-cart"></i> Cart
-            </a>
+            <span id="cart-count">
+            @await Component.InvokeAsync("Cart")
+            </span>
         </li>
     <li class="nav-item">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

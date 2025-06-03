@@ -46,9 +46,13 @@
                         quantity: quantity
                     }),
                     success: function(response) {
+                       $('#cart-count').load('/Menu/CartCountPartial');
                        alert('Added to Cart!');
                     },
-                    error: function(response) {
+                    error: function(response, textStatus, errorThrown) {
+                            console.error('Error status:', textStatus);
+                             console.error('Error message:', errorThrown);
+                             console.error('Response text:', response.responseText);
                            if (response.status === 401) {
                             var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
                             loginModal.show();

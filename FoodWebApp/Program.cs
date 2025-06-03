@@ -6,6 +6,9 @@ using Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using DataAccess.Repository.IRepository;
 using DataAccess.Repository;
+using System.Text.Json;
+using Models;
+using Stripe;
 
 namespace FoodWebApp
 {
@@ -35,6 +38,15 @@ namespace FoodWebApp
 
             builder.Services.AddScoped<ICartRepository, CartRepository>();
 
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
+
+            //Stripe Configuration
+
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Value;
 
 
             var app = builder.Build();

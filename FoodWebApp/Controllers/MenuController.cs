@@ -16,6 +16,12 @@ namespace FoodWebApp.Controllers
             _mealRepo = mealRepo;
         }
 
+        [HttpGet]
+        public IActionResult CartCountPartial()
+        {
+            return ViewComponent("Cart");
+        }
+
         // GET: /Menu
         public async Task<IActionResult> Index()
         {

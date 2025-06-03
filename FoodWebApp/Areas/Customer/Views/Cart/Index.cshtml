@@ -1,0 +1,83 @@
+@model List<Cart>
+
+<h2>Your Cart</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Meal</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="cart-item-@item.Id">
+                <td>@item.Meal.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price</td>
+                <td>@(item.Price * item.Quantity)</td>
+                <td>
+                    <button class="btn btn-danger" onclick="removeFromCart(@item.Id)">Remove</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Total:</strong> <span id="totalAmount">@Model.Sum(i => i.Price * i.Quantity).ToString("C")</span></p>
+
+
+<div class="mt-4 d-flex gap-3">
+    <a asp-controller="Menu"
+       asp-action="Index"
+       asp-area=""
+       class="btn btn-success custom-checkout-btn">
+        Continue Shopping
+    </a>
+
+
+    <a asp-area="Customer"
+       asp-controller="Checkout"
+       asp-action="Index"
+       class="btn btn-success custom-checkout-btn">
+        Proceed to Checkout
+    </a>
+</div>
+
+<script>
+    async function removeFromCart(id) {
+        const response = await fetch(`/api/cart-items/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            const row = document.getElementById(`cart-item-${id}`);
+            if (row) row.remove();
+            updateTotal();
+            $('#cart-count').load('/Menu/CartCountPartial');
+        } else {
+            alert("Failed to remove item.");
+        }
+    }
+
+    function updateTotal() {
+        let total = 0;
+        const rows = document.querySelectorAll('tbody tr[id^="cart-item-"]');
+        rows.forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            if (cells.length >= 4) {
+                const price = parseFloat(cells[2].textContent);
+                const quantity = parseInt(cells[1].textContent);
+                total += price * quantity;
+            }
+        });
+
+        const formattedTotal = total.toLocaleString(undefined, { style: 'currency', currency: 'NZD' });
+
+        document.getElementById('totalAmount').textContent = formattedTotal;
+    }
+</script>

@@ -26,19 +26,17 @@ namespace FoodWebApp.Controllers.Api
         [Authorize]
         public async Task<IActionResult> Post([FromBody] Cart cart)
         {
+
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userIdClaim))
                 return Unauthorized();
 
-            if (!int.TryParse(userIdClaim, out int userId))
-                return BadRequest("Invalid user ID.");
-
-            var meal = _mealRepository.Get(m => m.Id == cart.MenuItemId);
+            var meal = _mealRepository.Get(m => m.Id == cart.MealId);
             if (meal == null)
                 return NotFound("Meal not found.");
 
             // Set required values on the Cart object
-            cart.UserId = userId;
+            cart.UserId = userIdClaim;
             cart.Price = meal.Price;
 
              _cartRepository.Add(cart);

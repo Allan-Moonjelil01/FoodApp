@@ -41,6 +41,11 @@ namespace DataAccess.Repository
             return query.ToList();
         }
 
+        IQueryable<T> IRepository<T>.GetAllAlongWithLinked()
+        {
+            return _db.Set<T>();
+        }
+
         IEnumerable<T> IRepository<T>.GetList(Expression<Func<T, bool>> filter)
         {
             IQueryable<T> query = dbSet;
