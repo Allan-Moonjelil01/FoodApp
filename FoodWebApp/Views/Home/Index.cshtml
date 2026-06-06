@@ -1,112 +1,711 @@
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container">
-    <!-- Carousel & Welcome Text -->
-    <div class="row shadow rounded">
-        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner h-100">
-                    <div class="carousel-item active">
-                        <img src="/images/carouselImages/pexels-fotios-photos-1279330.jpg" class="d-block w-100 h-110" alt="Recipes">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="/images/carouselImages/magic-foods.jpg" class="d-block w-100 h-110" alt="Recipes">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="/images/carouselImages/pexels-ash-craig-122861-376464.jpg" class="d-block w-100 h-110" alt="Recipes">
-                    </div>
-                </div>
-            </div>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Food WebApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-            <div class="mb-3">
-                <h2><span class="text-success"><strong>Get the Best Food from the Finest Restaurant</strong></span></h2>
-            </div>
-            <div class="mb-3 p-3"><i class="fa-solid fa-leaf text-success mx-2 fs-4"></i><span class="fs-5 text-dark">Fresh Food</span></div>
-            <div class="mb-3 p-3"><i class="fa-solid fa-leaf text-success mx-2 fs-4"></i><span class="fs-5 text-dark">Fast Delivery</span></div>
-            <div class="mb-3 p-3"><i class="fa-solid fa-leaf text-success mx-2 fs-4"></i><span class="fs-5 text-dark">Best Quality</span></div>
-        </div>
-    </div>
+        :root {
+            --brand: #e85d2f;
+            --brand-dark: #c44a22;
+            --brand-light: #fff0eb;
+            --ink: #1a120e;
+            --ink-muted: #6b5a52;
+            --surface: #fffcfa;
+            --card-bg: #ffffff;
+            --border: rgba(180,130,110,0.18);
+            --nav-h: 68px;
+        }
 
-    <!-- Today's Special -->
-    <div class="row mt-5">
-        <div class="col-12 mb-3">
-            <h2 class="text-bg-dark p-2">Today's Special</h2>
-        </div>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--surface);
+            color: var(--ink);
+            padding-top: var(--nav-h);
+        }
 
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 border-0 shadow emboss-card">
-                <img src="http://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg" class="card-img-top rounded-top" style="height:250px; object-fit:cover;" alt="Pizza">
-                <div class="card-body text-center">
-                    <h5 class="card-title fw-bold">Pizza</h5>
-                </div>
-            </div>
-        </div>
+        /* ─── 3D-TOUCH NAVBAR ─── */
+        .navbar-3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-h);
+            z-index: 1000;
+            /* layered depth effect */
+            background: linear-gradient(180deg, #ffffff 0%, #f5ede8 100%);
+            border-bottom: 1px solid rgba(232,93,47,0.15);
+            /* 3D raised look */
+            box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 4px 12px rgba(100,50,30,0.12), 0 8px 24px rgba(100,50,30,0.06);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            gap: 0;
+        }
 
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 border-0 shadow emboss-card">
-                <img src="http://forkify-api.herokuapp.com/images/Bacon2BDouble2BCheese2BBurger2BSalad2B5002B61668d04f9e9.jpg" class="card-img-top rounded-top" style="height:250px; object-fit:cover;" alt="Burger">
-                <div class="card-body text-center">
-                    <h5 class="card-title fw-bold">Burger</h5>
-                </div>
-            </div>
-        </div>
+        /* embossed brand */
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--brand);
+            text-decoration: none;
+            letter-spacing: -0.4px;
+            margin-right: auto;
+            /* text emboss */
+            text-shadow: 0 1px 0 rgba(255,255,255,0.9), 0 -1px 0 rgba(100,40,20,0.15);
+        }
 
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 border-0 shadow emboss-card">
-                <img src="http://forkify-api.herokuapp.com/images/4204711663_3b0de36aaecd31.jpg" class="card-img-top rounded-top" style="height:250px; object-fit:cover;" alt="Macaroni">
-                <div class="card-body text-center">
-                    <h5 class="card-title fw-bold">Macaroni</h5>
-                </div>
-            </div>
-        </div>
-    </div>
+            .nav-brand span {
+                font-weight: 300;
+                color: var(--ink-muted);
+            }
 
-    <!-- Meet The Team Section -->
-    <section class="py-5 bg-white text-center">
+        /* 3D pill nav links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            list-style: none;
+        }
+
+            .nav-links a {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                padding: 9px 18px;
+                border-radius: 50px;
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--ink-muted);
+                text-decoration: none;
+                /* 3D raised pill */
+                background: linear-gradient(180deg, #ffffff 0%, #f0e8e3 100%);
+                border: 1px solid rgba(232,93,47,0.14);
+                box-shadow: 0 1px 0 rgba(255,255,255,0.95) inset, 0 2px 6px rgba(100,50,30,0.10), 0 1px 2px rgba(100,50,30,0.08);
+                transition: all 0.15s cubic-bezier(0.34,1.56,0.64,1);
+            }
+
+                .nav-links a:hover {
+                    color: var(--brand);
+                    background: linear-gradient(180deg, #fff5f0 0%, #ffe8de 100%);
+                    border-color: rgba(232,93,47,0.35);
+                    box-shadow: 0 1px 0 rgba(255,255,255,0.95) inset, 0 4px 12px rgba(232,93,47,0.18), 0 2px 4px rgba(232,93,47,0.12);
+                    transform: translateY(-2px) scale(1.03);
+                }
+
+                .nav-links a:active {
+                    transform: translateY(1px) scale(0.98);
+                    box-shadow: 0 1px 0 rgba(0,0,0,0.06) inset, 0 1px 3px rgba(100,50,30,0.10);
+                }
+
+                .nav-links a.active-link {
+                    color: var(--brand);
+                    background: linear-gradient(180deg, #fff2ec 0%, #fde0d0 100%);
+                    border-color: rgba(232,93,47,0.3);
+                }
+
+        /* cart badge */
+        .nav-cart {
+            position: relative;
+            margin-left: 8px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 17px;
+            height: 17px;
+            background: var(--brand);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--surface);
+        }
+
+        /* ─── HERO SECTION ─── */
+        .hero {
+            background: linear-gradient(135deg, #fff8f5 0%, #ffe8d8 60%, #ffd4b8 100%);
+            padding: 64px 0 56px;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: -80px;
+                right: -80px;
+                width: 400px;
+                height: 400px;
+                background: radial-gradient(circle, rgba(232,93,47,0.12) 0%, transparent 70%);
+                border-radius: 50%;
+            }
+
+        .hero-img-wrap {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 0 rgba(255,255,255,0.8) inset, 0 16px 48px rgba(100,50,30,0.18), 0 4px 12px rgba(100,50,30,0.10);
+            /* 3D tilt effect base */
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+            .hero-img-wrap:hover {
+                transform: perspective(800px) rotateY(-4deg) rotateX(2deg) translateY(-4px);
+                box-shadow: 0 2px 0 rgba(255,255,255,0.8) inset, 0 24px 64px rgba(100,50,30,0.22), 0 8px 24px rgba(100,50,30,0.12);
+            }
+
+            .hero-img-wrap img {
+                width: 100%;
+                height: 320px;
+                object-fit: cover;
+                display: block;
+            }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 40px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.2;
+            margin-bottom: 28px;
+        }
+
+            .hero-title em {
+                font-style: normal;
+                color: var(--brand);
+            }
+
+        .perk-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .perk-icon {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(145deg, #fff5f0, #ffe8de);
+            border: 1px solid rgba(232,93,47,0.2);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--brand);
+            flex-shrink: 0;
+            box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 3px 8px rgba(232,93,47,0.12);
+        }
+
+        .perk-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        .perk-desc {
+            font-size: 13px;
+            color: var(--ink-muted);
+        }
+
+        /* ─── SECTION HEADING ─── */
+        .section-head {
+            position: relative;
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+            .section-head::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -6px;
+                width: 50px;
+                height: 3px;
+                background: var(--brand);
+                border-radius: 2px;
+            }
+
+        .section-sub {
+            font-size: 15px;
+            color: var(--ink-muted);
+            margin-bottom: 36px;
+            margin-top: 14px;
+        }
+
+        /* ─── FOOD CARDS ─── */
+        .food-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+            box-shadow: 0 2px 0 rgba(255,255,255,0.9) inset, 0 4px 16px rgba(100,50,30,0.08);
+            cursor: pointer;
+        }
+
+            .food-card:hover {
+                transform: perspective(600px) rotateX(3deg) translateY(-8px);
+                box-shadow: 0 2px 0 rgba(255,255,255,0.9) inset, 0 20px 48px rgba(100,50,30,0.16), 0 8px 16px rgba(232,93,47,0.10);
+            }
+
+            .food-card img {
+                width: 100%;
+                height: 220px;
+                object-fit: cover;
+                transition: transform 0.4s ease;
+            }
+
+            .food-card:hover img {
+                transform: scale(1.05);
+            }
+
+        .food-card-body {
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .food-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .food-badge {
+            background: var(--brand-light);
+            color: var(--brand-dark);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(232,93,47,0.2);
+        }
+
+        /* ─── TEAM CARDS ─── */
+        .team-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+            box-shadow: 0 4px 16px rgba(100,50,30,0.07);
+        }
+
+            .team-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 16px 40px rgba(100,50,30,0.14);
+            }
+
+            .team-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+        .team-card-body {
+            padding: 20px 16px;
+        }
+
+        .team-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .team-role {
+            font-size: 13px;
+            color: var(--brand);
+            font-weight: 500;
+        }
+
+        /* ─── CTA BANNER ─── */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--brand) 0%, #c44a22 100%);
+            border-radius: 24px;
+            padding: 48px 48px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(232,93,47,0.30);
+        }
+
+            .cta-banner::before {
+                content: '🍽️';
+                position: absolute;
+                right: 40px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 100px;
+                opacity: 0.15;
+            }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .cta-sub {
+            font-size: 15px;
+            opacity: 0.85;
+            margin-bottom: 24px;
+        }
+
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 28px;
+            background: #fff;
+            color: var(--brand);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+            .btn-cta:hover {
+                transform: translateY(-2px) scale(1.03);
+                box-shadow: 0 8px 24px rgba(0,0,0,0.20);
+                color: var(--brand-dark);
+            }
+
+        /* ─── CAROUSEL ─── */
+        #heroCarousel .carousel-item img {
+            height: 320px;
+            object-fit: cover;
+        }
+
+        /* ─── SECTION SPACING ─── */
+        .section {
+            padding: 72px 0;
+        }
+
+        .section-alt {
+            background: #fff8f5;
+        }
+
+        /* ─── FOOTER ─── */
+        .site-footer {
+            background: linear-gradient(180deg, #2a1a14 0%, #1a100c 100%);
+            color: rgba(255,255,255,0.7);
+            padding: 56px 0 24px;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-heading {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--brand);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        .footer-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.15s;
+        }
+
+            .footer-link:hover {
+                color: var(--brand);
+            }
+
+        .footer-divider {
+            border-color: rgba(255,255,255,0.08);
+            margin: 32px 0 20px;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: rgba(255,255,255,0.35);
+            text-align: center;
+        }
+
+        /* ─── PAGE LOAD ANIMATION ─── */
+        @@keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-up {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+    </style>
+</head>
+<body>
+
+   
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero">
         <div class="container">
-            <h2 class="fw-bold mb-5">Meet The Team</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card h-100 border-0 shadow">
-                        <img src="/images/team/AdobeStock_233189785_Preview.jpeg" class="card-img-top rounded-top" alt="Joshua Was">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Joshua Was</h5>
-                            <p class="card-text text-success">Chef/Owner</p>
+            <div class="row align-items-center">
+
+                <div class="col-lg-6 mb-4 mb-lg-0 fade-up">
+                    <div class="hero-img-wrap">
+                        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="/images/carouselImages/pexels-fotios-photos-1279330.jpg" alt="Recipes">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="/images/carouselImages/magic-foods.jpg" alt="Recipes">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="/images/carouselImages/pexels-ash-craig-122861-376464.jpg" alt="Recipes">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card h-100 border-0 shadow">
-                        <img src="/images/team/AdobeStock_403117871_Preview.jpeg" class="card-img-top rounded-top" alt="Yishni jaco">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Yishni jaco</h5>
-                            <p class="card-text text-success">Chef/Co-Owner</p>
+
+                <div class="hero-text col-lg-6 fade-up delay-2">
+                    <h1 class="hero-title">Get the <em>Best Food</em><br>from the Finest<br>Restaurant</h1>
+
+                    <div class="perk-item">
+                        <div class="perk-icon"><i class="fa-solid fa-leaf"></i></div>
+                        <div>
+                            <div class="perk-label">Fresh Food</div>
+                            <div class="perk-desc">Sourced daily from local farms</div>
+                        </div>
+                    </div>
+                    <div class="perk-item">
+                        <div class="perk-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <div>
+                            <div class="perk-label">Fast Delivery</div>
+                            <div class="perk-desc">At your door in 30 minutes or less</div>
+                        </div>
+                    </div>
+                    <div class="perk-item">
+                        <div class="perk-icon"><i class="fa-solid fa-star"></i></div>
+                        <div>
+                            <div class="perk-label">Best Quality</div>
+                            <div class="perk-desc">Five-star meals, every time</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card h-100 border-0 shadow">
-                        <img src="/images/team/AdobeStock_223003725_Preview.jpeg" class="card-img-top rounded-top" alt="Revisha Karuna">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Revisha Karuna</h5>
-                            <p class="card-text text-success">Front of House</p>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ TODAY'S SPECIAL ═══ -->
+    <section class="section">
+        <div class="container">
+            <div class="fade-up">
+                <h2 class="section-head">Today's Special</h2>
+                <p class="section-sub">Hand-picked dishes our chefs are proud of today</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4 fade-up delay-1">
+                    <div class="food-card">
+                        <img src="http://forkify-api.herokuapp.com/images/steakhousepizza0b87.jpg" alt="Pizza">
+                        <div class="food-card-body">
+                            <span class="food-name">🍕 Pizza</span>
+                            <span class="food-badge">Chef's Pick</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card h-100 border-0 shadow">
-                        <img src="/images/team/AdobeStock_641882588_Preview.jpeg" class="card-img-top rounded-top" alt="Gimesha resh">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Gimesha resh</h5>
-                            <p class="card-text text-success">Pastry Chef</p>
+                <div class="col-md-4 fade-up delay-2">
+                    <div class="food-card">
+                        <img src="http://forkify-api.herokuapp.com/images/Bacon2BDouble2BCheese2BBurger2BSalad2B5002B61668d04f9e9.jpg" alt="Burger">
+                        <div class="food-card-body">
+                            <span class="food-name">🍔 Burger</span>
+                            <span class="food-badge">Popular</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-up delay-3">
+                    <div class="food-card">
+                        <img src="http://forkify-api.herokuapp.com/images/4204711663_3b0de36aaecd31.jpg" alt="Macaroni">
+                        <div class="food-card-body">
+                            <span class="food-name">🧀 Macaroni</span>
+                            <span class="food-badge">New</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-</div>
+
+    <!-- ═══ CTA BANNER ═══ -->
+    <section class="section section-alt">
+        <div class="container">
+            <div class="cta-banner fade-up">
+                <h2 class="cta-title">Ready to order something amazing?</h2>
+                <p class="cta-sub">Browse our full menu and get your meal delivered in minutes.</p>
+                <a href="/Menu" class="btn-cta">
+                    <i class="fa-solid fa-utensils"></i> View Full Menu
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ MEET THE TEAM ═══ -->
+    <section class="section">
+        <div class="container text-center">
+            <div class="fade-up">
+                <h2 class="section-head" style="margin: 0 auto 8px;">Meet The Team</h2>
+                <p class="section-sub">The passionate people behind every dish</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-3 col-sm-6 fade-up delay-1">
+                    <div class="team-card">
+                        <img src="/images/team/AdobeStock_233189785_Preview.jpeg" alt="Joshua Was">
+                        <div class="team-card-body">
+                            <div class="team-name">Joshua Was</div>
+                            <div class="team-role">Chef / Owner</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 fade-up delay-2">
+                    <div class="team-card">
+                        <img src="/images/team/AdobeStock_403117871_Preview.jpeg" alt="Yishni Jaco">
+                        <div class="team-card-body">
+                            <div class="team-name">Yishni Jaco</div>
+                            <div class="team-role">Chef / Co-Owner</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 fade-up delay-3">
+                    <div class="team-card">
+                        <img src="/images/team/AdobeStock_223003725_Preview.jpeg" alt="Revisha Karuna">
+                        <div class="team-card-body">
+                            <div class="team-name">Revisha Karuna</div>
+                            <div class="team-role">Front of House</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 fade-up delay-4">
+                    <div class="team-card">
+                        <img src="/images/team/AdobeStock_641882588_Preview.jpeg" alt="Gimesha Resh">
+                        <div class="team-card-body">
+                            <div class="team-name">Gimesha Resh</div>
+                            <div class="team-role">Pastry Chef</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row g-5">
+
+                <div class="col-md-4">
+                    <div class="footer-brand">🍽️ FoodWebApp</div>
+                    <p style="font-size:14px; line-height:1.7;">Your trusted destination for fresh, flavorful food — delivered right to your door.</p>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="footer-heading">Connect With Us</div>
+                    <a href="#" class="footer-link"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+                    <a href="#" class="footer-link"><i class="fa-solid fa-envelope"></i> Email Us</a>
+                    <a href="#" class="footer-link"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                    <a href="#" class="footer-link"><i class="fa-brands fa-instagram"></i> Instagram</a>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="footer-heading">Find Us</div>
+                    <p class="footer-link"><i class="fa-solid fa-location-dot" style="color:var(--brand)"></i> Lower Hutt, Wellington</p>
+                    <p class="footer-link"><i class="fa-solid fa-clock" style="color:var(--brand)"></i> Open Daily: 8:00 AM – 8:00 PM</p>
+                    <p style="font-size:13px; color:rgba(255,255,255,0.45);">Monday to Sunday</p>
+                </div>
+
+            </div>
+
+            <hr class="footer-divider" />
+            <p class="footer-copy">© 2025 Created by Allan &amp; Sam | All rights reserved</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
