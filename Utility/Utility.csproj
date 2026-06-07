@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="EventFlow.EntityFramework" Version="1.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.10" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="11.0.0-preview.4.26230.115" />
+    <PackageReference Include="Microsoft.UpgradeAssistant.ApiCatalog.Assets" Version="10.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="11.0.0-preview.1.26230.3" />
+    <PackageReference Include="Stripe.net" Version="52.0.0" />
+  </ItemGroup>
+
 </Project>
